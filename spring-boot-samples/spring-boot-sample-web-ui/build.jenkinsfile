@@ -98,7 +98,7 @@ pipeline {
 
 						// install galaxy roles
 						//sh "ansible-galaxy install -vvv -r provision/requirements.yml -p provision/roles/"
-						sh "sudo ansible-playbook ~/Deployment/deployment.yml -i ~/Deployment/hosts -l epam-ci -vvv"vvv
+						sh "ansible-playbook ~/Deployment/deployment.yml -i ~/Deployment/hosts -l epam-ci -vvv"vvv
 
 						//ansiblePlaybook colorized: true,
 						//credentialsId: 'devops',
