@@ -97,16 +97,18 @@ pipeline {
 						echo "The URL is ${env.ARTIFACT_URL} and the app name is ${env.APP_NAME}"
 
 						// install galaxy roles
-						sh "ansible-galaxy install -vvv -r provision/requirements.yml -p provision/roles/"
+						//sh "ansible-galaxy install -vvv -r provision/requirements.yml -p provision/roles/"
+						sh "sudo ansible-playbook /home/ubuntu/Documents/Deployment/deployment.yml -i /home/ubuntu/Documents/Deployment/hosts -l epam-ci -vvv"vvv
 
-						ansiblePlaybook colorized: true,
-						credentialsId: 'devops',
-						limit: "${HOST_PROVISION}",
-						installation: 'ansible',
-						inventory: 'provision/inventory.ini',
-						playbook: 'provision/playbook.yml',
-						sudo: true,
-						sudoUser: 'devops'
+						//ansiblePlaybook colorized: true,
+						//credentialsId: 'devops',
+						//limit: "${HOST_PROVISION}",
+						//limit: "epam-ci",
+						//installation: 'ansible',
+						//inventory: 'provision/inventory.ini',
+						//playbook: '~/Deployment/deployment.yml',
+						//sudo: true,
+						//sudoUser: 'devops'
 					}
                 }
             }
