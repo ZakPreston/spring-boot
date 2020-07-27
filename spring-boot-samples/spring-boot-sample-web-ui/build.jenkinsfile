@@ -1,0 +1,95 @@
+//spring-boot/spring-boot-samples/spring-boot-sample-web-ui/build.jenkinsfile
+
+properties([pipelineTriggers([githubPush()])])
+
+pipeline {
+    agent any
+
+    tools {
+        // Note: this should match with the tool name configured in your jenkins instance (JENKINS_URL/configureTools/)
+        //maven "Maven 3.6.0"
+        maven "maven"
+    }
+
+    environment {
+        // This can be nexus3 or nexus2
+        NEXUS_VERSION = "nexus3"
+        // This can be http or https
+        NEXUS_PROTOCOL = "http"
+        // Where your Nexus is running
+        NEXUS_URL = "localhost:8081"
+        // Repository where we will upload the artifact
+        NEXUS_REPOSITORY = "Spring2020"
+        // Jenkins credential id to authenticate to Nexus OSS
+        NEXUS_CREDENTIAL_ID = "Nexus"
+        //GitHub repo URL
+        GIT_URL = "https://github.com/ZakPreston/spring-boot.git"
+        //Artifact url
+        //ARTIFACT_URL = "http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/${repoPath}/${version}/${pom.artifactId}-${version}.jar"
+        ARTIFACT_URL = "http://localhost:8081/service/rest/repository/browse/Spring2020/org/springframework/boot/spring-boot-sample-web-ui/12/"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // GIT submodule recursive checkout
+                checkout scm: [
+                        $class: 'GitSCM',
+                        branches: [[name: '*/2.1.x']],
+                        userRemoteConfigs: [[url:GIT_URL]]
+                ]
+            }
+        }        
+        
+        stage('Build') {
+            steps {
+                // Run Maven on a Unix agent.
+                sh "mvn -version"
+                sh "mvn clean install -f ./spring-boot-samples/spring-boot-sample-web-ui/pom.xml"
+            }
+        }
+
+        stage("publish to nexus") {
+            steps {
+                script {
+                    // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
+                    pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
+                    // Find built artifact under target folder
+                    filesByGlob = findFiles(glob: "spring-boot-samples/spring-boot-sample-web-ui/target/*.${pom.packaging}");
+                    // Print some info from the artifact found
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                    // Extract the path from the File found
+                    artifactPath = filesByGlob[0].path;
+                    // Assign to a boolean response verifying If the artifact name exists
+                    artifactExists = fileExists artifactPath;
+                    if(artifactExists) {
+                        echo "*** File: ${artifactPath}, group: ${pom.parent.groupId}, packaging: ${pom.packaging}, version ${BUILD_NUMBER}";
+                        nexusArtifactUploader(
+                            nexusVersion: NEXUS_VERSION,
+                            protocol: NEXUS_PROTOCOL,
+                            nexusUrl: NEXUS_URL,
+                            groupId: pom.parent.groupId,
+                            version: BUILD_NUMBER,
+                            repository: NEXUS_REPOSITORY,
+                            credentialsId: NEXUS_CREDENTIAL_ID,
+                            artifacts: [
+                                // Artifact generated such as .jar, .ear and .war files.
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging],
+                                // Lets upload the pom.xml file for additional information for Transitive dependencies
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml",
+                                type: "pom"]
+                            ]
+                        );
+                    } else {
+                        error "*** File: ${artifactPath}, could not be found";
+                    }
+                }
+            }
+        }
+    }
+}
