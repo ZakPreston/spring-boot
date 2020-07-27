@@ -93,7 +93,7 @@ pipeline {
         }
         
         stage('Deploy') {        
-            step {
+            steps {
                 script {
                   pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
                   repoPath =  "${pom.parent.groupId}".replace(".", "/") +
