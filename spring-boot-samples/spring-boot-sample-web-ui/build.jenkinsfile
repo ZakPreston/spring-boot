@@ -1,32 +1,24 @@
-//spring-boot/spring-boot-samples/spring-boot-sample-web-ui/build.jenkinsfile
-
 properties([pipelineTriggers([githubPush()])])
+
+def ARTIFACT_GROUP_ID
+def ARTIFACT_ID
+def ARTIFACT_PACKAGING
 
 pipeline {
     agent any
 
     tools {
-        // Note: this should match with the tool name configured in your jenkins instance (JENKINS_URL/configureTools/)
-        //maven "Maven 3.6.0"
         maven "maven"
     }
 
     environment {
-        // This can be nexus3 or nexus2
         NEXUS_VERSION = "nexus3"
-        // This can be http or https
         NEXUS_PROTOCOL = "http"
-        // Where your Nexus is running
         NEXUS_URL = "localhost:8081"
-        // Repository where we will upload the artifact
         NEXUS_REPOSITORY = "Spring2020"
-        // Jenkins credential id to authenticate to Nexus OSS
         NEXUS_CREDENTIAL_ID = "Nexus"
-        //GitHub repo URL
+
         GIT_URL = "https://github.com/ZakPreston/spring-boot.git"
-        //Artifact url
-        //ARTIFACT_URL = "http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/${repoPath}/${version}/${pom.artifactId}-${version}.jar"
-        ARTIFACT_URL = "http://localhost:8081/service/rest/repository/browse/Spring2020/org/springframework/boot/spring-boot-sample-web-ui/12/"
     }
 
     stages {
@@ -49,18 +41,21 @@ pipeline {
             }
         }
 
-        stage("publish to nexus") {
+        stage("Publish") {
             steps {
                 script {
-                    // Read POM xml file using 'readMavenPom' step , this step 'readMavenPom' is included in: https://plugins.jenkins.io/pipeline-utility-steps
                     pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
-                    // Find built artifact under target folder
+                    
+                    ARTIFACT_GROUP_ID = pom.parent.groupId
+                    ARTIFACT_ID = pom.artifactId
+ 
+                    ARTIFACT_PACKAGING = pom.packaging
                     filesByGlob = findFiles(glob: "spring-boot-samples/spring-boot-sample-web-ui/target/*.${pom.packaging}");
-                    // Print some info from the artifact found
+                    
                     echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
-                    // Extract the path from the File found
+                    
                     artifactPath = filesByGlob[0].path;
-                    // Assign to a boolean response verifying If the artifact name exists
+
                     artifactExists = fileExists artifactPath;
                     if(artifactExists) {
                         echo "*** File: ${artifactPath}, group: ${pom.parent.groupId}, packaging: ${pom.packaging}, version ${BUILD_NUMBER}";
@@ -68,18 +63,16 @@ pipeline {
                             nexusVersion: NEXUS_VERSION,
                             protocol: NEXUS_PROTOCOL,
                             nexusUrl: NEXUS_URL,
-                            groupId: pom.parent.groupId,
+                            groupId: ARTIFACT_GROUP_ID,
                             version: BUILD_NUMBER,
                             repository: NEXUS_REPOSITORY,
                             credentialsId: NEXUS_CREDENTIAL_ID,
                             artifacts: [
-                                // Artifact generated such as .jar, .ear and .war files.
-                                [artifactId: pom.artifactId,
+                                [artifactId: ARTIFACT_ID,
                                 classifier: '',
                                 file: artifactPath,
-                                type: pom.packaging],
-                                // Lets upload the pom.xml file for additional information for Transitive dependencies
-                                [artifactId: pom.artifactId,
+                                type: ARTIFACT_PACKAGING],
+                                [artifactId: ARTIFACT_ID,
                                 classifier: '',
                                 file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml",
                                 type: "pom"]
@@ -95,27 +88,26 @@ pipeline {
         stage('Deploy') {        
             steps {
                 script {
-                  pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
-                  repoPath =  "${pom.parent.groupId}".replace(".", "/") +
-                                  "/${pom.artifactId}"
+					pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
+					repoPath =  "${ARTIFACT_GROUP_ID}".replace(".", "/") + "/${ARTIFACT_ID}"
+					echo repoPath
+					artifactUrl = "http://${NEXUS_URL}/repository/ansible-meetup/${repoPath}/${BUILD_NUMBER}/${ARTIFACT_ID}-${BUILD_NUMBER}.${ARTIFACT_PACKAGING}"
+					echo artifactUrl
+					withEnv(["ARTIFACT_URL=${artifactUrl}", "APP_NAME=${pom.artifactId}"]) {
+						echo "The URL is ${env.ARTIFACT_URL} and the app name is ${env.APP_NAME}"
 
-                  artifactUrl = "http://${NEXUS_URL}/repository/ansible-meetup/${repoPath}/${BUILD_NUMBER}/${pom.artifactId}-${BUILD_NUMBER}.jar"
+						// install galaxy roles
+						sh "ansible-galaxy install -vvv -r provision/requirements.yml -p provision/roles/"
 
-                  withEnv(["ARTIFACT_URL=${artifactUrl}", "APP_NAME=${pom.artifactId}"]) {
-                      echo "The URL is ${env.ARTIFACT_URL} and the app name is ${env.APP_NAME}"
-
-                      // install galaxy roles
-                      //sh "ansible-galaxy install -vvv -r provision/requirements.yml -p provision/roles/"
-
-                      ansiblePlaybook colorized: true,
-                      credentialsId: 'system-user',
-                      limit: 'epam-qa'       //"${HOST_PROVISION}",
-                      installation: 'ansible',
-                      //inventory: 'provision/inventory.ini',
-                      playbook: '~/Deployment/deployment.yml',
-                      sudo: true,
-                      sudoUser: 'ubuntu'
-                  }
+						ansiblePlaybook colorized: true,
+						credentialsId: 'devops',
+						limit: "${HOST_PROVISION}",
+						installation: 'ansible',
+						inventory: 'provision/inventory.ini',
+						playbook: 'provision/playbook.yml',
+						sudo: true,
+						sudoUser: 'devops'
+					}
                 }
             }
         }
