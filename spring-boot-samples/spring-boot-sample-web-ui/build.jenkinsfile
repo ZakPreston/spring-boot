@@ -91,5 +91,33 @@ pipeline {
                 }
             }
         }
+        
+        stage('Deploy') {        
+            step {
+                script {
+                  pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
+                  repoPath =  "${pom.parent.groupId}".replace(".", "/") +
+                                  "/${pom.artifactId}"
+
+                  artifactUrl = "http://${NEXUS_URL}/repository/ansible-meetup/${repoPath}/${BUILD_NUMBER}/${pom.artifactId}-${BUILD_NUMBER}.jar"
+
+                  withEnv(["ARTIFACT_URL=${artifactUrl}", "APP_NAME=${pom.artifactId}"]) {
+                      echo "The URL is ${env.ARTIFACT_URL} and the app name is ${env.APP_NAME}"
+
+                      // install galaxy roles
+                      sh "ansible-galaxy install -vvv -r provision/requirements.yml -p provision/roles/"
+
+                      ansiblePlaybook colorized: true,
+                      credentialsId: 'devops',
+                      limit: "${HOST_PROVISION}",
+                      installation: 'ansible',
+                      inventory: 'provision/inventory.ini',
+                      playbook: 'provision/playbook.yml',
+                      sudo: true,
+                      sudoUser: 'devops'
+                  }
+                }
+            }
+        }
     }
 }
