@@ -1,0 +1,3 @@
+    username_linux: devops
+    username_password: epam-linux
+    test_container_image: hello-world

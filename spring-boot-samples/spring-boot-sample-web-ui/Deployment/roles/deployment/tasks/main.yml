@@ -1,0 +1,53 @@
+  - name: Run "apt-get update"
+    apt:
+      update_cache: yes
+
+  - name: Install Java 1.8.0
+    apt:
+      name: openjdk-8-jdk    #java-1.8.0-openjdk
+      #     update_cache: yes
+      state: present
+
+  - name: Add Docker GPG apt Key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+
+  - name: Add Docker Repository
+    apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu bionic stable
+      state: present
+
+  - name: Update apt and install docker-ce
+    apt: update_cache=yes name=docker-ce state=latest
+
+  - name: Install Pip
+    apt: 
+      name: python-pip
+      update_cache: yes
+      state: present
+
+  - name: Check Pip version
+    shell: "pip --version"
+
+  - name: Install Docker Module for Python
+    pip:
+      name: docker
+
+  - name: Add devops user
+    user:
+      name: "{{username_linux}}"
+      password: "{{username_password}}"
+      shell: /bin/bash
+      comment: devops user
+      groups: sudo, docker
+      append: yes
+
+  - name: Add devops user to sudoers
+    shell: "echo 'nexus   ALL=(ALL)       NOPASSWD: ALL' >> /etc/sudoers.tmp"
+
+    #  - name: Pull default Docker image    
+    #docker_image:
+    #  name: "{{test_container_image}}"
+    #  source: pull
+
