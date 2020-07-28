@@ -98,8 +98,11 @@ pipeline {
 
 						// install galaxy roles
 						//sh "ansible-galaxy install -vvv -r provision/requirements.yml -p provision/roles/"
-						sh "ITEA | ansible-playbook ./spring-boot-samples/spring-boot-sample-web-ui/Deployment/deployment.yml -i ./spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts -l epam-ci"
+						//sh "ITEA | ansible-playbook ./spring-boot-samples/spring-boot-sample-web-ui/Deployment/deployment.yml -i ./spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts -l epam-ci"
+						
+						ansiblePlaybook(credentialsId: 'CI-Deploy', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deployment.yml')
 
+						
 						//ansiblePlaybook colorized: true,
 						//credentialsId: 'devops',
 						//limit: "${HOST_PROVISION}",
@@ -109,6 +112,7 @@ pipeline {
 						//playbook: '~/Deployment/deployment.yml',
 						//sudo: true,
 						//sudoUser: 'devops'
+					
 					}
                 }
             }
