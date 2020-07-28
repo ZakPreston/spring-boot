@@ -100,7 +100,7 @@ pipeline {
 						//sh "ansible-galaxy install -vvv -r provision/requirements.yml -p provision/roles/"
 						//sh "ITEA | ansible-playbook ./spring-boot-samples/spring-boot-sample-web-ui/Deployment/deployment.yml -i ./spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts -l epam-ci"
 						
-						ansiblePlaybook(credentialsId: 'CI-Deploy', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deployment.yml')
+						ansiblePlaybook(credentialsId: 'CI-Deploy', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deployment.yml', limit: 'epam-ci')
 
 						
 						//ansiblePlaybook colorized: true,
