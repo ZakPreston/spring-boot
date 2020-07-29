@@ -1,0 +1,7 @@
+    username_linux: devops
+    username_password: epam-linux
+    test_container_image: hello-world
+    nexus_user: devops
+    nexus_password: epam-nexus
+    artifaсt_port: 8082
+    hostname: localhost

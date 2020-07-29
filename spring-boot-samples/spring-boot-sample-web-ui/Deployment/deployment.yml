@@ -1,6 +1,0 @@
----
-- name: Install CI and QA environments
-  hosts: epam-ci
-  roles:
-  - role: deployment
-    become: yes

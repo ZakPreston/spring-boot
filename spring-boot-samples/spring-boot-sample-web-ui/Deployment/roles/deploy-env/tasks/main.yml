@@ -22,13 +22,17 @@
     apt: update_cache=yes name=docker-ce state=latest
 
   - name: Install Pip
-    apt: 
+    apt:
       name: python-pip
       update_cache: yes
       state: present
 
   - name: Check Pip version
     shell: "pip --version"
+
+  - name: Install lxml
+    pip:
+      name: lxml
 
   - name: Install Docker Module for Python
     pip:
@@ -46,8 +50,7 @@
   - name: Add devops user to sudoers
     shell: "echo 'nexus   ALL=(ALL)       NOPASSWD: ALL' >> /etc/sudoers.tmp"
 
-    #  - name: Pull default Docker image    
+    #  - name: Pull default Docker image
     #docker_image:
     #  name: "{{test_container_image}}"
     #  source: pull
-

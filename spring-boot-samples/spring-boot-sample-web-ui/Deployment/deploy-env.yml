@@ -1,0 +1,9 @@
+---
+- name: Install CI and QA environments
+  hosts: all
+  roles:
+  - role: deploy-env
+    become: yes
+  vars_files:
+    - ./group_vars/main.yml
+

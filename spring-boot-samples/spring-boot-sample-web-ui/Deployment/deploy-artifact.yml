@@ -1,0 +1,8 @@
+---
+- name: Deply and run Artifact
+  hosts: all
+  roles:
+  - role: deploy-artifact
+    become: yes
+  vars_files:
+    - ./group_vars/main.yml

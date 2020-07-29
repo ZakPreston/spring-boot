@@ -1,0 +1,16 @@
+  - maven_artifact:
+      version: 12
+      group_id: org.springframework.boot
+      artifact_id: spring-boot-sample-web-ui
+      repository_url: 'http://192.168.110.100:8081/repository/Spring2020/'
+      #      username: "{{nexus_user}}"
+      #      password: "{{nexus_password}}"
+      dest: ~/spring-boot-sample-web-ui-latest.jar
+#      keep_name: yes
+
+  - name: Kill existing spring-boot-sample-web-ui-latest.jar
+    shell: "kill -9 spring-boot-sample-web-ui-latest.jar"
+    ignore_errors: yes
+      
+  - name: Run Artifact
+    shell: nohup java -jar ~/spring-boot-sample-web-ui-latest.jar --server.port='{{ artifact_port }}' > /dev/null
