@@ -1,3 +1,8 @@
+
+  - name: Kill existing spring-boot-sample-web-ui-latest.jar
+    shell: pkill -f *spring-boot-sample-web-ui* 2> /dev/null
+    ignore_errors: yes
+
   - maven_artifact:
       version: 12
       group_id: org.springframework.boot
@@ -7,10 +12,6 @@
       #      password: "{{nexus_password}}"
       dest: ~/spring-boot-sample-web-ui-latest.jar
 #      keep_name: yes
-
-  - name: Kill existing spring-boot-sample-web-ui-latest.jar
-    shell: "kill -9 spring-boot-sample-web-ui-latest.jar"
-    ignore_errors: yes
-      
-  - name: Run Artifact
-    shell: nohup java -jar ~/spring-boot-sample-web-ui-latest.jar --server.port='{{ artifact_port }}' > /dev/null
+ 
+  - name: Deploy Artifact
+    shell: nohup java -jar ~/spring-boot-sample-web-ui-latest.jar --server.port={{artifact_port}} &
