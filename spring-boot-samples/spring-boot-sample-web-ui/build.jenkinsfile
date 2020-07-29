@@ -88,32 +88,12 @@ pipeline {
         stage('Deploy') {        
             steps {
                 script {
-					pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
-					repoPath =  "${ARTIFACT_GROUP_ID}".replace(".", "/") + "/${ARTIFACT_ID}"
-					echo repoPath
-					artifactUrl = "http://${NEXUS_URL}/repository/ansible-meetup/${repoPath}/${BUILD_NUMBER}/${ARTIFACT_ID}-${BUILD_NUMBER}.${ARTIFACT_PACKAGING}"
-					echo artifactUrl
-					withEnv(["ARTIFACT_URL=${artifactUrl}", "APP_NAME=${pom.artifactId}"]) {
-						echo "The URL is ${env.ARTIFACT_URL} and the app name is ${env.APP_NAME}"
-
-						// install galaxy roles
-						//sh "ansible-galaxy install -vvv -r provision/requirements.yml -p provision/roles/"
-						//sh "ITEA | ansible-playbook ./spring-boot-samples/spring-boot-sample-web-ui/Deployment/deployment.yml -i ./spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts -l epam-ci"
-						
-						ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deployment.yml', limit: 'epam-ci')
-
-						
-						//ansiblePlaybook colorized: true,
-						//credentialsId: 'devops',
-						//limit: "${HOST_PROVISION}",
-						//limit: "epam-ci",
-						//installation: 'ansible',
-						//inventory: 'provision/inventory.ini',
-						//playbook: '~/Deployment/deployment.yml',
-						//sudo: true,
-						//sudoUser: 'devops'
-					
-					}
+			repoPath =  "${ARTIFACT_GROUP_ID}".replace(".", "/") + "/${ARTIFACT_ID}"
+			artifactUrl = "http://${NEXUS_URL}/repository/ansible-meetup/${repoPath}/${BUILD_NUMBER}/${ARTIFACT_ID}-${BUILD_NUMBER}.${ARTIFACT_PACKAGING}"
+			withEnv(["ARTIFACT_URL=${artifactUrl}", "APP_NAME=${pom.artifactId}"]) {
+				echo "The URL is ${env.ARTIFACT_URL} and the app name is ${env.APP_NAME}"
+				ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deployment.yml', limit: 'epam-ci')
+			}
                 }
             }
         }
