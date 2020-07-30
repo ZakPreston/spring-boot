@@ -15,11 +15,11 @@ pipeline {
     environment {
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "http"
-        NEXUS_URL = "localhost:8081"
+        NEXUS_URL = "192.168.110.100:8081"
         NEXUS_REPOSITORY = "Spring2020"
         NEXUS_CREDENTIAL_ID = "Nexus"
 	APPLICATION_PORT = 8082
-
+	REPOSITORY_URL = "http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/"
         GIT_URL = "https://github.com/ZakPreston/spring-boot.git"
 	
 	//Ansible variables
@@ -100,9 +100,7 @@ pipeline {
 			}
                 }
                 script {
-			artifactUrl = "http://${NEXUS_URL}/repository/ansible-meetup/${repoPath}/${BUILD_NUMBER}/${ARTIFACT_ID}-${BUILD_NUMBER}.${ARTIFACT_PACKAGING}"
 			withEnv(["ARTIFACT_VERSION=${BUILD_NUMBER}", "APP_NAME=${pom.artifactId}"]) {
-				echo "The URL is ${env.ARTIFACT_URL} and the app name is ${env.APP_NAME}"
 				ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-artifact.yml', limit: 'epam-ci')
 			}
                 }
