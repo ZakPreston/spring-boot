@@ -1,6 +1,6 @@
 
   - name: Kill existing "{{lookup('env','ARTIFACT_ID')}}"
-    shell: pkill -f *"{{lookup('env','ARTIFACT_ID')}}"* 2> /dev/null
+    shell: "pkill -f *{{lookup('env','ARTIFACT_ID')}}* 2> /dev/null"
     ignore_errors: yes
 
   - maven_artifact:
