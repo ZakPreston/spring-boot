@@ -23,9 +23,7 @@ pipeline {
         GIT_URL = "https://github.com/ZakPreston/spring-boot.git"
 	
 	//Ansible variables
-	LINUX_USER = "devops"
-	LINUX_PASSWD = "epam-linux"
-	
+	LINUX_USER = "devops"	
     }
 
     stages {
@@ -95,8 +93,10 @@ pipeline {
         stage('Deploy') {        
             steps {
                 script {
-			repoPath =  "${ARTIFACT_GROUP_ID}".replace(".", "/") + "/${ARTIFACT_ID}"
-			artifactUrl = "http://${NEXUS_URL}/repository/ansible-meetup/${repoPath}/${BUILD_NUMBER}/${ARTIFACT_ID}-${BUILD_NUMBER}.${ARTIFACT_PACKAGING}"
+			withCredentials([string(credentialsId: 'LINUX_PASSWORD', variable: 'LINUX_PASSWORD')]) {
+        			echo "My secret text is '${LINUX_PASSWORD}'"
+			}
+			echo "My secret text is '${LINUX_PASSWORD}'"
 			withEnv(["ARTIFACT_URL=${artifactUrl}", "APP_NAME=${pom.artifactId}"]) {
 				echo "The URL is ${env.ARTIFACT_URL} and the app name is ${env.APP_NAME}"
 				ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-env.yml', limit: 'epam-ci')
