@@ -4,6 +4,7 @@ def ARTIFACT_GROUP_ID
 def ARTIFACT_ID
 def ARTIFACT_PACKAGING
 
+
 pipeline {
     agent any
 
@@ -20,6 +21,11 @@ pipeline {
 	APPLICATION_PORT = 8082
 
         GIT_URL = "https://github.com/ZakPreston/spring-boot.git"
+	
+	//Ansible variables
+	LINUX_USER = "devops"
+	LINUX_PASSWD = "epam-linux"
+	
     }
 
     stages {
