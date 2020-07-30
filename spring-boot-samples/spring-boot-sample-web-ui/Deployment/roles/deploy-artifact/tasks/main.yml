@@ -1,17 +1,14 @@
 
-  - name: Kill existing spring-boot-sample-web-ui-latest.jar
-    shell: pkill -f *spring-boot-sample-web-ui* 2> /dev/null
+  - name: Kill existing "{{lookup('env','ARTIFACT_ID')}}"
+    shell: pkill -f *"{{lookup('env','ARTIFACT_ID')}}"* 2> /dev/null
     ignore_errors: yes
 
   - maven_artifact:
       version: "{{lookup('env','ARTIFACT_VERSION')}}"
-      group_id: org.springframework.boot
-      artifact_id: spring-boot-sample-web-ui
-      repository_url: 'http://192.168.110.100:8081/repository/Spring2020/'
-      #      username: "{{nexus_user}}"
-      #      password: "{{nexus_password}}"
-      dest: ~/spring-boot-sample-web-ui-latest.jar
-#      keep_name: yes
+      group_id: "{{lookup('env','ARTIFACT_GROUP_ID')}}"
+      artifact_id: "{{lookup('env','ARTIFACT_ID')}}"
+      repository_url: "{{lookup('env','REPOSITORY_URL')}}"
+      dest: ~/"{{lookup('env','ARTIFACT_ID')}}".jar
  
   - name: Deploy Artifact
-    shell: nohup java -jar ~/spring-boot-sample-web-ui-latest.jar --server.port="{{lookup('env','APPLICATION_PORT')}}" &
+    shell: nohup java -jar ~/"{{lookup('env','ARTIFACT_ID')}}".jar --server.port="{{lookup('env','APPLICATION_PORT')}}" &
