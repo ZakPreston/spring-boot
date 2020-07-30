@@ -24,7 +24,6 @@ pipeline {
 	
 	//Ansible variables
 	LINUX_USER = "devops"
-	L
     }
 
     stages {
