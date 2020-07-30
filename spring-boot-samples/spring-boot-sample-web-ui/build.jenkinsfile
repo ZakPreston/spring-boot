@@ -94,12 +94,9 @@ pipeline {
             steps {
                 script {
 			withCredentials([string(credentialsId: 'LINUX_PASSWORD', variable: 'LINUX_PASSWORD')]) {
-        			echo "My secret text is '${LINUX_PASSWORD}'"
-			}
-			echo "My secret text is '${LINUX_PASSWORD}'"
-			withEnv(["ARTIFACT_URL=${artifactUrl}", "APP_NAME=${pom.artifactId}"]) {
-				echo "The URL is ${env.ARTIFACT_URL} and the app name is ${env.APP_NAME}"
-				ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-env.yml', limit: 'epam-ci')
+				//withEnv(["LINUX_PASSWORD=${LINUX_PASSWORD}"]) {
+					ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-env.yml', limit: 'epam-ci')
+				//}
 			}
                 }
                 script {
