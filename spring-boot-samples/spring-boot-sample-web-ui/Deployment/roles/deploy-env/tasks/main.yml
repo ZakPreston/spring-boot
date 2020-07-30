@@ -21,7 +21,7 @@
   - name: Update apt and install docker-ce
     apt: update_cache=yes name=docker-ce state=latest
 
-  - name: Install Pip
+  - name: Install Python Pip
     apt:
       name: python-pip
       update_cache: yes
@@ -40,10 +40,10 @@
 
   - name: Add devops user
     user:
-      name: "{{username_linux}}"
-      password: "{{username_password}}"
+      name: "{{lookup('env','LINUX_USER')}}"
+      password: "{{lookup('env','LINUX_PASSWORD')}}"
       shell: /bin/bash
-      comment: devops user
+      comment: devops user and password
       groups: sudo, docker
       append: yes
 
