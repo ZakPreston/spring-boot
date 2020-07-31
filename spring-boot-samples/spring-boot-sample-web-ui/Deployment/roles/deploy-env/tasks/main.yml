@@ -42,15 +42,12 @@
     user:
       name: "{{lookup('env','LINUX_USER')}}"
       password: "{{lookup('env','LINUX_PASSWORD')}}"
-      shell: /bin/bash
-      comment: devops user and password
+      shell: /usr/bin/nologin
+      create_home: yes
+      #home: /var/lib/
       groups: sudo, docker
       append: yes
+      comment: devops user and password
 
   - name: Add devops user to sudoers
     shell: "echo 'nexus   ALL=(ALL)       NOPASSWD: ALL' >> /etc/sudoers.tmp"
-
-    #  - name: Pull default Docker image
-    #docker_image:
-    #  name: "{{test_container_image}}"
-    #  source: pull
