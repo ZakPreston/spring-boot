@@ -2,14 +2,13 @@
 localhost
 
 [epam-ci]
-192.168.120.100
+epam-ci
 
 [epam-qa]
-192.168.130.100
+epam-qa
 
 [epam-docker]
-192.168.110.200
+epam-docker
 
 [epam-ci-qa]
-192.168.120.100
-192.168.130.100
+epam-ci-qa
