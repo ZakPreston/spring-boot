@@ -1,0 +1,58 @@
+def ARTIFACT_VERSION
+
+pipeline {
+    agent any
+    
+    parameters {
+        choice(name: 'ENV_NAME', choices: ['epam-qa', 'epam-ci'], description: 'Artifact Version')
+        string(name: 'ARTIFACT_VERSION', defaultValue: '', description: 'Artifact Version (Latest, if not set)')
+    }
+    
+    environment {
+        NEXUS_URL = "192.168.110.100:8081"
+        NEXUS_REPOSITORY = "Spring2020"
+        APPLICATION_PORT = 8082
+        REPOSITORY_URL = "http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/"
+        LINUX_USER = "devops"
+        GIT_URL = "https://github.com/ZakPreston/spring-boot.git"
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    if (!params.ARTIFACT_VERSION) {
+                        ARTIFACT_VERSION = "${Jenkins.instance.getItem('CI').lastSuccessfulBuild.number}"
+                    } else {
+                        ARTIFACT_VERSION = params.ARTIFACT_VERSION
+                    }
+                }
+                checkout scm: [
+                        $class: 'GitSCM',
+                        branches: [[name: '*/2.1.x']],
+                        userRemoteConfigs: [[url:GIT_URL]]
+                ]
+            }
+        }
+        
+        stage('Deploy') {        
+            steps {
+                script {
+                    pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
+                    
+                    echo "Running deploy for ${pom.artifactId}-${ARTIFACT_VERSION} on '${params.ENV_NAME}'"
+                    currentBuild.description = "${params.ENV_NAME.toUpperCase()} - ${pom.artifactId}-${ARTIFACT_VERSION}"
+                    
+                    withCredentials([string(credentialsId: 'LINUX_PASSWORD', variable: 'LINUX_PASSWORD')]) {
+                        withEnv(["LINUX_PASSWORD=${LINUX_PASSWORD}"]) {
+                            ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-env.yml', limit: params.ENV_NAME)
+                        }
+                    }
+                    withEnv(["ARTIFACT_VERSION=${ARTIFACT_VERSION}", "ARTIFACT_GROUP_ID=${pom.parent.groupId}", "ARTIFACT_ID=${pom.artifactId}"]) {
+                        ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-artifact.yml', limit: params.ENV_NAME)
+                    }
+                }
+            }
+        }        
+    }
+}
