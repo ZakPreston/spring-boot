@@ -1,0 +1,218 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          description: "Credentials for Nexus integration"
+          id: "Nexus"
+          password: "{AQAAABAAAAAQxYXXm8eNd8kEC1oC2LDOC9yRx8WcSrHMnH5vAW+pauQ=}"
+          scope: GLOBAL
+          username: "devops"
+      - usernamePassword:
+          description: "test"
+          id: "test"
+          password: "{AQAAABAAAAAQ4iw+5udnbUFqt8exUl2M9kIgby1OPBGanBHSLgRYZFM=}"
+          scope: GLOBAL
+          username: "admin"
+      - string:
+          description: "github webhook for jenkins"
+          id: "github-token"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAwjkkUPpbKDZLFHkaoUho3NPel+1dgwEJ5EEt7AygCwl+W8aoLfUy1GeHwzkKQIO7sbPXcyThXKNkNUnQHnjETJw==}"
+      - usernamePassword:
+          description: "system user account in Linux"
+          id: "system-user"
+          password: "{AQAAABAAAAAQPfUufnOZwF/Xwnc2HR8G1wourv1zVJGxEOkLeim92Lk=}"
+          scope: GLOBAL
+          username: "devops"
+      - basicSSHUserPrivateKey:
+          id: "ssh-jenkins"
+          privateKeySource:
+            directEntry:
+              privateKey: "{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}"
+          scope: GLOBAL
+          username: "ubuntu"
+      - usernamePassword:
+          description: "Github credentials"
+          id: "ZP-Github"
+          password: "{AQAAABAAAAAQwiFZKI3sBd/NhRYWidEY2kCPFOa/M27rDsex2WmPbeM=}"
+          scope: GLOBAL
+          username: "ZakPreston"
+      - string:
+          description: "Password for Linux user"
+          id: "LINUX_PASSWORD"
+          scope: GLOBAL
+          secret: "{AQAAABAAAAAQhSVt9kHTA1GIn5UEMvT2C9STqdYDFT8BA1B5OlIOTP4=}"
+jenkins:
+  agentProtocols:
+  - "JNLP4-connect"
+  - "Ping"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  disableRememberMe: false
+  labelAtoms:
+  - name: "master"
+  markupFormatter: "plainText"
+  mode: NORMAL
+  myViewsTabBar: "standard"
+  numExecutors: 2
+  primaryView:
+    all:
+      name: "all"
+  projectNamingStrategy: "standard"
+  quietPeriod: 5
+  remotingSecurity:
+    enabled: true
+  scmCheckoutRetryCount: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+      - id: "zp"
+        name: "admin"
+        properties:
+        - "apiToken"
+        - mailer:
+            emailAddress: "olexii.amasonovich@meta.ua"
+        - preferredProvider:
+            providerId: "default"
+        - sshPublicKey:
+            authorizedKeys: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC80P5yqPMnxVFd+4z0H/iA/r93b3RaC1sUxPTdI7d1Zo4b1pCM3gTc3QT5P/adEaXDJQVAlBzY6gQUwLgkNoqIAsCBcfiYV6gG1VAR7HEbM1Dmfldc6Iq3UkH45JjWBNIOHMWDSek45M2JsXezS11k1C+Ch2qGMdqXboNXatV+/m+zgd97IS+KS42rPoypjPxTTCkOq33gHfFc09ilZom4YZZ2XrZyq3UV/OrK/t4UfGgVN21KOe9FLhGk0HkaAw5n17HGv0Oykj2c1wqNxGNxggsNG0tkvduIKCa/nF4dMJf6oZDHxPR0zjYcsMJQv0sD5Qm9h1QmIkse+1GOA2wN\
+              \ vagrant"
+  slaveAgentPort: -1
+  updateCenter:
+    sites:
+    - id: "default"
+      url: "https://updates.jenkins.io/update-center.json"
+  views:
+  - all:
+      name: "all"
+  viewsTabBar: "standard"
+security:
+  apiToken:
+    creationOfLegacyTokenEnabled: false
+    tokenGenerationOnCreationEnabled: false
+    usageStatisticsEnabled: true
+  sSHD:
+    port: -1
+  scriptApproval:
+    approvedSignatures:
+    - "method hudson.model.ItemGroup getItem java.lang.String"
+    - "method hudson.model.Job getLastSuccessfulBuild"
+    - "method hudson.model.Run getNumber"
+    - "staticMethod jenkins.model.Jenkins getInstance"
+unclassified:
+  buildDiscarders:
+    configuredBuildDiscarders:
+    - "jobBuildDiscarder"
+  buildStepOperation:
+    enabled: false
+  defaultFolderConfiguration:
+    healthMetrics:
+    - worstChildHealthMetric:
+        recursive: true
+  extendedEmailPublisher:
+    adminRequiredForTemplateTesting: false
+    allowUnregisteredEnabled: false
+    charset: "UTF-8"
+    debugMode: false
+    defaultBody: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:\r\n\r\nCheck\
+      \ console output at $BUILD_URL to view the results."
+    defaultContentType: "text/plain"
+    defaultSubject: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!"
+    maxAttachmentSize: -1
+    maxAttachmentSizeMb: 0
+    precedenceBulk: false
+    useSsl: false
+    watchingEnabled: false
+  gitHubConfiguration:
+    apiRateLimitChecker: ThrottleForNormalize
+  gitHubPluginConfig:
+    configs:
+    - credentialsId: "github-token"
+      name: "github"
+    hookUrl: "http://ec2-13-53-216-30.eu-north-1.compute.amazonaws.com:8080/github-webhook/"
+  gitSCM:
+    createAccountBasedOnEmail: false
+    showEntireCommitSummaryInChanges: false
+    useExistingAccountWithSameEmail: false
+  globalNexusConfiguration:
+    instanceId: "a069ee04c2dd463b8f3d9e25feadc558"
+    nxrmConfigs:
+    - nxrm3Configuration:
+        credentialsId: "Nexus"
+        displayName: "Nexus-EPAM"
+        id: "Nexus-DevTools"
+        internalId: "b05c1fe6-aa83-4502-aff5-4a4ef3e01c58"
+        serverUrl: "http://localhost:8081"
+  location:
+    adminAddress: "address not configured yet <nobody@nowhere>"
+    url: "http://ec2-13-53-216-30.eu-north-1.compute.amazonaws.com:8080/"
+  mailer:
+    charset: "UTF-8"
+    useSsl: false
+    useTls: false
+  mavenModuleSet:
+    localRepository: "default"
+  pollSCM:
+    pollingThreadCount: 10
+  sshPublisher:
+    commonConfig:
+      disableAllExec: false
+      encryptedPassphrase: "{AQAAABAAAAAQCSYkrvfU2e0lGcMUiTYf3kWIotKwRWvo5ETniF6lB4U=}"
+      key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEowIBAAKCAQEAvND+cqjzJ8VRXfuM9B/4gP6/d290WgtbFMT03SO3dWaOG9aQ
+        jN4E3N0E+T/2nRGlwyUFQJQc2OoEFMC4JDaKiALAgXH4mFeoBtVQEexxGzNQ5n5X
+        XOiKt1JB+OSY1gTSDhzFg0npOOTNibF3s0tdZNQvgodqhjHal26DV2rVfv5vs4Hf
+        eyEvikuNqz6MqYz8U0wpDqt94B3xXNPYpWaJuGGWdl62cqt1Ffzqyv7eFHxoFTdt
+        SjnvRS4RpNB5GgMOZ9exxr9DspI9nNcKjcRjcYILDRtLZL3biCgmv5xeHTCX+qGQ
+        x8T0dM42HLDCUL9LA+UJvYdUJiJLHvtRjgNsDQIDAQABAoIBACpcPOmea8bdZs7N
+        86aFUawm+u+hqpnU+F8lfMXsEGmfU3x9W7quyKqAT3BX4E0Gu4iXUqFVWU902OuK
+        /QTq05OGAohH+Hy9Fa5KxwbuY8W1co3zhEgMx6ovIyvipUNGm5Wc8Nbuiws/kbk1
+        fmRUISTQ0cPX+5cVsjPNEFxZVIKD0cwG0AS0GRCjz7w+QBTUb91ZWpiOVLaa6NSl
+        s73a0SUahKbngUUoymHoaMyj/M+cKZi49xd0Nuxw6L7NCRHvznKNph+PEE0TyXd9
+        bkwtL6MeA5uvkj8WhHq2zH4I1LdnRtwUaNzRmfd/3vHLAvBkAV0yj8CtHi7ioI4F
+        HEk5bKUCgYEA63BH3H6S/XP5L4/xkoA8UmlAfiHDgHV5CkJmw8OQLUhl4WSzs4KM
+        G7AMEL9fJmCUSmklAA8LoL7cycI+RVwTCAlTUOMRB3ZLwkSDwbePjxRAkZeYS4pl
+        djwKcBgzEc8w0Bviam397N8Kfs61K/6gSaIDcKL2VkhsMi/8oI/G1J8CgYEAzU5g
+        cBhKMNIbIc9aNEd/WVr44bh/xyV1MBl+eANYNyTBH0VyYvNKT6cvXSKTatIrDyct
+        pNp0hThMxJuogiVhhe+1jc6k9Rt88+Eg6sCXIzuSHIofqyKJgN97PndDXOk9Smon
+        uUgYx6p8pv74dTKAweEgCUgHoq60LKq2kWcps9MCgYBXgUXUN98eAIqvGMrqbmr9
+        Hk1wE9B74C16mK9lNzxQ+EWVfj4kC/NTHx185APTWbYD6gxsdysVNZsOCfnnAY+5
+        Pu4OdDaSFW+W5qwpxbW/sgFFm5hpCykmxq4Cd5wTlHRKBPMkJ3lnHobiFqXTkjG0
+        7Fhm9sqjywsbpCY67vUxdQKBgQCg3BkZmx5+NBFII2QE9EQmqe25RcrwKTwxjLgX
+        pl83DZg3PT2LpB4EXPTyX0Xr+3H7dHIB6ZxESUF1BpU4K7vGqnOxAUkkNv5nQ2x8
+        IpwI4gLwU5TOjMf57qBs6BsisCjypkwrkv6/aqgyXDIl+YUC47YrL4G0CHhpSvSy
+        5oa5OwKBgFR5tFrEqZPxlzoA1LoGGClMIsUXo2LcysaV54usNeaXBmvI1TK3UELE
+        bDeOC0Vof4iwZQX5o8ObS2MJyZ85B48pYXWv6hFBfhiXaAGklIPWfMlaoPQOKKU6
+        PlY1I8a8bL0FKABOWksXMS+mufxW1Fsv7aQ/aUEHwzcFIXo7CONd
+        -----END RSA PRIVATE KEY-----
+  timestamper:
+    allPipelines: false
+    elapsedTimeFormat: "'<b>'HH:mm:ss.S'</b> '"
+    systemTimeFormat: "'<b>'HH:mm:ss'</b> '"
+tool:
+  git:
+    installations:
+    - home: "git"
+      name: "Default"
+  maven:
+    installations:
+    - name: "maven"
+      properties:
+      - installSource:
+          installers:
+          - maven:
+              id: "3.6.3"
+  pipelineMaven:
+    triggerDownstreamUponResultAborted: false
+    triggerDownstreamUponResultFailure: false
+    triggerDownstreamUponResultNotBuilt: false
+    triggerDownstreamUponResultSuccess: true
+    triggerDownstreamUponResultUnstable: false
