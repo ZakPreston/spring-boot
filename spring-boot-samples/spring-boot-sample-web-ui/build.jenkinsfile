@@ -106,7 +106,7 @@ pipeline {
                 }
                 script {
 			withEnv(["ARTIFACT_VERSION=${BUILD_NUMBER}", "ARTIFACT_GROUP_ID=${ARTIFACT_GROUP_ID}", "ARTIFACT_ID=${ARTIFACT_ID}"]) {
-				ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-artifact.yml', limit: 'epam-ci')
+				ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-artifact.yml', limit: 'local')
 			}
                 }
             }
