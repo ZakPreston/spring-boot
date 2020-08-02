@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     if (!params.ARTIFACT_VERSION) {
-                        ARTIFACT_VERSION = "${Jenkins.instance.getItem('CI').lastSuccessfulBuild.number}"
+                        ARTIFACT_VERSION = "${Jenkins.instance.getItem('Build').lastSuccessfulBuild.number}"
                     } else {
                         ARTIFACT_VERSION = params.ARTIFACT_VERSION
                     }
