@@ -1,15 +1,15 @@
 [local]
-"{{lookup('env','EPAM-DEVTOOLS')}}"
+localhost
 
 [epam-ci]
-{{lookup('env','EPAM_CI')}}
+192.168.120.100
 
 [epam-qa]
-"{{lookup('env','EPAM-QA')}}"
+192.168.130.100
 
 [epam-docker]
-"{{lookup('env','EPAM-DOCKER')}}"
+192.168.110.200
 
 [epam-ci-qa]
-"{{lookup('env','EPAM-CI')}}"
-"{{lookup('env','EPAM-QA')}}"
+192.168.120.100
+192.168.130.100
