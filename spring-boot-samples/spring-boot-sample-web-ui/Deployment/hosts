@@ -1,14 +1,15 @@
 [local]
-localhost
+"{{lookup('env','EPAM-DEVTOOLS')}}"
 
 [epam-ci]
-epam-ci
+"{{lookup('env','EPAM-CI')}}"
 
 [epam-qa]
-epam-qa
+"{{lookup('env','EPAM-QA')}}"
 
 [epam-docker]
-epam-docker
+"{{lookup('env','EPAM-DOCKER')}}"
 
 [epam-ci-qa]
-epam-ci-qa
+"{{lookup('env','EPAM-CI')}}"
+"{{lookup('env','EPAM-QA')}}"
