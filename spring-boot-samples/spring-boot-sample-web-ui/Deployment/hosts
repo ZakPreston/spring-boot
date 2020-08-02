@@ -2,7 +2,7 @@
 "{{lookup('env','EPAM-DEVTOOLS')}}"
 
 [epam-ci]
-"{{lookup('env','EPAM-CI')}}"
+{{lookup('env','EPAM_CI')}}
 
 [epam-qa]
 "{{lookup('env','EPAM-QA')}}"
