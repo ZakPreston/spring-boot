@@ -4,5 +4,3 @@
   roles:
   - role: deploy-artifact
     become: yes
-  vars_files:
-    - ./group_vars/main.yml
