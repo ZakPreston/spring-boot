@@ -1,10 +1,5 @@
 properties([pipelineTriggers([githubPush()])])
 
-def ARTIFACT_GROUP_ID
-def ARTIFACT_ID
-def ARTIFACT_PACKAGING
-
-
 pipeline {
     agent any
 
@@ -18,23 +13,12 @@ pipeline {
         NEXUS_URL = "192.168.110.100:8081"
         NEXUS_REPOSITORY = "Spring2020"
         NEXUS_CREDENTIAL_ID = "Nexus"
-	APPLICATION_PORT = 8082
-	REPOSITORY_URL = "http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/"
         GIT_URL = "https://github.com/ZakPreston/spring-boot.git"
-	
-	//Ansible variables
-	LINUX_USER = "devops"
-	//Ansible-hosts
-	EPAM-CI = "192.168.120.100"
-	EPAM-QA = "192.168.130.100"
-	EPAM-DEVTOOLS = "192.168.110.100"
-	EPAM-DOCKER = "192.168.110.200"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // GIT submodule recursive checkout
                 checkout scm: [
                         $class: 'GitSCM',
                         branches: [[name: '*/2.1.x']],
@@ -56,10 +40,6 @@ pipeline {
                 script {
                     pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
                     
-                    ARTIFACT_GROUP_ID = pom.parent.groupId
-                    ARTIFACT_ID = pom.artifactId
- 
-                    ARTIFACT_PACKAGING = pom.packaging
                     filesByGlob = findFiles(glob: "spring-boot-samples/spring-boot-sample-web-ui/target/*.${pom.packaging}");
                     
                     echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
@@ -73,16 +53,16 @@ pipeline {
                             nexusVersion: NEXUS_VERSION,
                             protocol: NEXUS_PROTOCOL,
                             nexusUrl: NEXUS_URL,
-                            groupId: ARTIFACT_GROUP_ID,
+                            groupId: pom.parent.groupId,
                             version: BUILD_NUMBER,
                             repository: NEXUS_REPOSITORY,
                             credentialsId: NEXUS_CREDENTIAL_ID,
                             artifacts: [
-                                [artifactId: ARTIFACT_ID,
+                                [artifactId: pom.artifactId,
                                 classifier: '',
                                 file: artifactPath,
-                                type: ARTIFACT_PACKAGING],
-                                [artifactId: ARTIFACT_ID,
+                                type: pom.packaging],
+                                [artifactId: pom.artifactId,
                                 classifier: '',
                                 file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml",
                                 type: "pom"]
@@ -97,18 +77,10 @@ pipeline {
         
         stage('Deploy') {        
             steps {
-                script {
-			withCredentials([string(credentialsId: 'LINUX_PASSWORD', variable: 'LINUX_PASSWORD')]) {
-				withEnv(["LINUX_PASSWORD=${LINUX_PASSWORD}"]) {
-					ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-env.yml', limit: 'epam-docker')
-				}
-			}
-                }
-                script {
-			withEnv(["ARTIFACT_VERSION=${BUILD_NUMBER}", "ARTIFACT_GROUP_ID=${ARTIFACT_GROUP_ID}", "ARTIFACT_ID=${ARTIFACT_ID}"]) {
-				ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-artifact.yml', limit: 'local')
-			}
-                }
+                build job: 'Deploy', parameters: [
+                    string(name: 'ENV_NAME', value: 'epam-ci'),
+                    string(name: 'ARTIFACT_VERSION', value: BUILD_NUMBER)
+                ], wait: false
             }
         }
     }
