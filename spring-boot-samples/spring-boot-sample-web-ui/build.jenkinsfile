@@ -24,6 +24,10 @@ pipeline {
 	
 	//Ansible variables
 	LINUX_USER = "devops"
+	epam-ci = "192.168.120.100"
+	epam-qa = "192.168.130.100"
+	epam-devtools = "localhost"
+	epam-devops = "192.168.110.200"
     }
 
     stages {
