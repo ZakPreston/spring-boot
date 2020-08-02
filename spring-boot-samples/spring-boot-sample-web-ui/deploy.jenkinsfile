@@ -4,7 +4,7 @@ pipeline {
     agent any
     
     parameters {
-        choice(name: 'ENV_NAME', choices: ['epam-qa', 'epam-ci'], description: 'Artifact Version')
+        choice(name: 'ENV_NAME', choices: ['epam-qa', 'epam-ci', 'epam-docker', 'epam-ci-qa', 'local'], description: 'Artifact Version')
         string(name: 'ARTIFACT_VERSION', defaultValue: '', description: 'Artifact Version (Latest, if not set)')
     }
     
