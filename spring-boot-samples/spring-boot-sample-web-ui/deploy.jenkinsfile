@@ -15,8 +15,6 @@ pipeline {
         REPOSITORY_URL = "http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/"
         LINUX_USER = "devops"
         GIT_URL = "https://github.com/ZakPreston/spring-boot.git"
-        //lol
-        EPAM_CI = "192.168.120.100"
     }
     
     stages {
