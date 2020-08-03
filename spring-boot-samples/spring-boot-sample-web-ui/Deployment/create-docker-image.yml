@@ -1,0 +1,6 @@
+---
+- name: Install CI and QA environments
+  hosts: all
+  roles:
+  - role: create-docker-image
+    become: yes
