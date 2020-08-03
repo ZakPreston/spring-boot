@@ -64,7 +64,7 @@ pipeline {
                         ]
                     );
                     echo "${WORKSPACE}/spring-boot-samples/spring-boot-sample-web-ui/application.dockerfile"
-                    ls "${WORKSPACE}/spring-boot-samples/spring-boot-sample-web-ui/"
+                    sh ls "${WORKSPACE}/spring-boot-samples/spring-boot-sample-web-ui/"
                     withEnv(["ARTIFACT_VERSION=${BUILD_NUMBER}", "ARTIFACT_ID=${pom.artifactId}", "DOCKERFILE_PATH=${DOCKERFILE_PATH}/spring-boot-samples/spring-boot-sample-web-ui/application.dockerfile"]) {
                         ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/create-docker-image.yml', limit: 'local')
                     }
