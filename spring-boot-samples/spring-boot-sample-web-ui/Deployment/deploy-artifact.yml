@@ -1,5 +1,5 @@
 ---
-- name: Deply and run Artifact
+- name: Deploy and run Artifact
   hosts: all
   roles:
   - role: deploy-artifact
