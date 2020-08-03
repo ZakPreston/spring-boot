@@ -13,6 +13,7 @@ pipeline {
         NEXUS_URL = "192.168.110.100:8081"
         NEXUS_REPOSITORY = "Spring2020"
         NEXUS_CREDENTIAL_ID = "Nexus"
+        DOCKER_REPO_URL = "192.168.110.100:8088"
         GIT_URL = "https://github.com/ZakPreston/spring-boot.git"
     }
 
@@ -39,38 +40,29 @@ pipeline {
             steps {
                 script {
                     pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
-                    
                     filesByGlob = findFiles(glob: "spring-boot-samples/spring-boot-sample-web-ui/target/*.${pom.packaging}");
                     
                     echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
                     
-                    artifactPath = filesByGlob[0].path;
-
-                    artifactExists = fileExists artifactPath;
-                    if(artifactExists) {
-                        echo "*** File: ${artifactPath}, group: ${pom.parent.groupId}, packaging: ${pom.packaging}, version ${BUILD_NUMBER}";
-                        nexusArtifactUploader(
-                            nexusVersion: NEXUS_VERSION,
-                            protocol: NEXUS_PROTOCOL,
-                            nexusUrl: NEXUS_URL,
-                            groupId: pom.parent.groupId,
-                            version: BUILD_NUMBER,
-                            repository: NEXUS_REPOSITORY,
-                            credentialsId: NEXUS_CREDENTIAL_ID,
-                            artifacts: [
-                                [artifactId: pom.artifactId,
-                                classifier: '',
-                                file: artifactPath,
-                                type: pom.packaging],
-                                [artifactId: pom.artifactId,
-                                classifier: '',
-                                file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml",
-                                type: "pom"]
-                            ]
-                        );
-                    } else {
-                        error "*** File: ${artifactPath}, could not be found";
-                    }
+                    nexusArtifactUploader(
+                        nexusVersion: NEXUS_VERSION,
+                        protocol: NEXUS_PROTOCOL,
+                        nexusUrl: NEXUS_URL,
+                        groupId: pom.parent.groupId,
+                        version: BUILD_NUMBER,
+                        repository: NEXUS_REPOSITORY,
+                        credentialsId: NEXUS_CREDENTIAL_ID,
+                        artifacts: [
+                            [artifactId: pom.artifactId,
+                            classifier: '',
+                            file: filesByGlob[0].path,
+                            type: pom.packaging],
+                            [artifactId: pom.artifactId,
+                            classifier: '',
+                            file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml",
+                            type: "pom"]
+                        ]
+                    );
                 }
             }
         }
