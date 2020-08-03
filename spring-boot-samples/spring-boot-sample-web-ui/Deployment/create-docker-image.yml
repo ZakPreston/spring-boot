@@ -1,5 +1,5 @@
 ---
-- name: Install CI and QA environments
+- name: Create Docker container from artifacts
   hosts: all
   roles:
   - role: create-docker-image
