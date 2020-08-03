@@ -4,3 +4,4 @@
   roles:
   - role: deploy-artifact
     become: yes
+    become_user: devops
