@@ -8,7 +8,7 @@
         path: ../../../../
         dockerfile: application.dockerfile
       name: "{{lookup('env','DOCKER_REPO_URL')}}:8088/{{lookup('env','ARTIFACT_ID')}}"
-      tag: "{{lookup('env','APPLICATION_VERSION')}}"
+      tag: "{{lookup('env','ARTIFACT_VERSION')}}"
       push: yes
       source: build
       state: present
