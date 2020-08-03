@@ -4,4 +4,4 @@
   roles:
   - role: create-docker-image
     become: yes
-    become_user: jenkins
+    #become_user: jenkins
