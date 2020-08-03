@@ -63,6 +63,10 @@ pipeline {
                             type: "pom"]
                         ]
                     );
+                    
+                    withEnv(["ARTIFACT_VERSION=${BUILD_NUMBER}", "ARTIFACT_ID=${pom.artifactId}"]) {
+                        ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/create-docker-image.yml', limit: 'local')
+                    }
                 }
             }
         }
