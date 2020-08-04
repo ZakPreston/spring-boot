@@ -1,0 +1,7 @@
+---
+- name: Deploy and run Docker Artifact
+  hosts: all
+  roles:
+  - role: deploy-docker-artifact
+    become: yes
+    become_user: devops
