@@ -49,7 +49,7 @@ pipeline {
                 script {
                     pom = readMavenPom file: "spring-boot-samples/spring-boot-sample-web-ui/pom.xml";
                     
-                    echo "Running deploy for ${pom.artifactId}-${ARTIFACT_VERSION} on '${params.ENV_NAME}' with port ${env.APPLICATION_PORT}"
+                    echo "Running deploy for ${pom.artifactId}-${ARTIFACT_VERSION} on '${params.ENV_NAME}' with port ${params.APPLICATION_PORT}"
                     currentBuild.description = "${params.ENV_NAME.toUpperCase()}: ${params.ARTIFACT_TYPE} - ${pom.artifactId}-${ARTIFACT_VERSION}"
                     
                     withCredentials([string(credentialsId: 'LINUX_PASSWORD', variable: 'LINUX_PASSWORD')]) {
