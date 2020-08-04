@@ -3,5 +3,5 @@
   hosts: all
   roles:
   - role: create-docker-image
-    #become: yes
+    become: yes
     become_user: jenkins
