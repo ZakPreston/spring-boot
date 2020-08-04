@@ -1,9 +1,9 @@
-  - name: Log into DockerHub
+  - name: Log into Docker repo
     docker_login:
       registry_url: "{{lookup('env','DOCKER_REPO_URL')}}"
       username: "{{lookup('env','NEXUS_USER')}}"
       password: "{{lookup('env','NEXUS_PASSWORD')}}"
-  - name: Build an image and push it to a private repo
+  - name: Build an image and push it to a repo
     docker_image:
       build:
         path: "{{lookup('env','DOCKERFILE_PATH')}}"
