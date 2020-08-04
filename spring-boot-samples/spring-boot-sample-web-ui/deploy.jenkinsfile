@@ -7,7 +7,7 @@ pipeline {
         choice(name: 'ENV_NAME', choices: ['epam-qa', 'epam-ci', 'epam-docker'], description: 'Artifact version')
         choice(name: 'ARTIFACT_TYPE', choices: ['jar', 'container'], description: 'Type of artifact to deploy')
         string(name: 'ARTIFACT_VERSION', defaultValue: '', description: 'Artifact version (latest, if not set)')
-        choice(name: 'APPLICATION_PORT', choices: ['8084', '8085', '8086', '8087', '8088', '8089'], description: 'Listen port for the running Application')
+        choice(name: 'APPLICATION_PORT', choices: ['8082', '8083', '8084', '8085', '8086', '8087', '8088', '8089'], description: 'Listen port for the running Application')
     }
     
     environment {
