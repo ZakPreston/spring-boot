@@ -4,8 +4,9 @@ pipeline {
     agent any
     
     parameters {
-        choice(name: 'ENV_NAME', choices: ['epam-qa', 'epam-ci', 'epam-docker'], description: 'Artifact Version')
-        string(name: 'ARTIFACT_VERSION', defaultValue: '', description: 'Artifact Version (Latest, if not set)')
+        choice(name: 'ENV_NAME', choices: ['epam-qa', 'epam-ci', 'epam-docker'], description: 'Artifact version')
+        choice(name: 'ARTIFACT_TYPE', choices: ['jar', 'container'], description: 'Type of artifact to deploy')
+        string(name: 'ARTIFACT_VERSION', defaultValue: '', description: 'Artifact version (latest, if not set)')
     }
     
     environment {
@@ -56,11 +57,13 @@ pipeline {
                         }
                     }
                     withEnv(["ARTIFACT_VERSION=${ARTIFACT_VERSION}", "ARTIFACT_GROUP_ID=${pom.parent.groupId}", "ARTIFACT_ID=${pom.artifactId}"]) {
-                        //ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-artifact.yml', limit: params.ENV_NAME)
-                        
-                        withCredentials([usernamePassword(credentialsId: NEXUS_CREDENTIAL_ID, passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USER')]) {
-                            ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-docker-artifact.yml', limit: params.ENV_NAME)
-                        }                        
+                        if (params.ARTIFACT_TYPE == "jar") {
+                            ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-artifact.yml', limit: params.ENV_NAME)
+                        } else {
+                            withCredentials([usernamePassword(credentialsId: NEXUS_CREDENTIAL_ID, passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USER')]) {
+                                ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/deploy-docker-artifact.yml', limit: params.ENV_NAME)
+                            }    
+                        }
                     }
                 }
             }
