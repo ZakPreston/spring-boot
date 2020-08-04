@@ -67,8 +67,9 @@ pipeline {
                         withEnv([
                             "ARTIFACT_VERSION=${BUILD_NUMBER}",
                             "ARTIFACT_ID=${pom.artifactId}",
+                            "DOCKERFILE_PATH=${WORKSPACE}/spring-boot-samples/spring-boot-sample-web-ui/",
                             "NEXUS_PASSWORD=${NEXUS_PASSWORD}",
-                            "NEXUS_USER=${NEXUS_USER}",
+                            "NEXUS_USER=${NEXUS_USER}"
                         ]) {
                             ansiblePlaybook(inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/create-docker-image.yml', limit: 'local')
                         }
