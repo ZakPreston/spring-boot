@@ -64,7 +64,7 @@ pipeline {
                         ]
                     );
 
-                    withEnv(["ARTIFACT_VERSION=${BUILD_NUMBER}", "ARTIFACT_ID=${pom.artifactId}", "DOCKERFILE_PATH=${WORKSPACE}/spring-boot-samples/spring-boot-sample-web-ui/application.dockerfile"]) {
+                    withEnv(["ARTIFACT_VERSION=${BUILD_NUMBER}", "ARTIFACT_ID=${pom.artifactId}", "DOCKERFILE_PATH=${WORKSPACE}/spring-boot-samples/spring-boot-sample-web-ui/"]) {
                         ansiblePlaybook(inventory: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/hosts', playbook: './spring-boot-samples/spring-boot-sample-web-ui/Deployment/create-docker-image.yml', limit: 'local')
                     }
                 }
