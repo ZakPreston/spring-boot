@@ -1,4 +1,4 @@
- - name: Run Docker image
+  - name: Run Docker image
     docker_container:
       name: "{{lookup('env','ARTIFACT_ID')}}"
       image: "{{lookup('env','DOCKER_REPO_URL')}}/{{lookup('env','ARTIFACT_ID')}}:{{lookup('env','ARTIFACT_VERSION')}}"
