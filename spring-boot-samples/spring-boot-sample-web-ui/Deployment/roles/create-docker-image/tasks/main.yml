@@ -5,8 +5,8 @@
   - name: Build an image and push it to a private repo
     docker_image:
       build:
-        path: "{{lookup('env','DOCKERFILE_PATH')}}"
-        #path: ../../../../
+        #path: "{{lookup('env','DOCKERFILE_PATH')}}"
+        path: ../../../../
         dockerfile: application.dockerfile
       name: "{{lookup('env','DOCKER_REPO_URL')}}/{{lookup('env','ARTIFACT_ID')}}"
       tag: "{{lookup('env','ARTIFACT_VERSION')}}"
