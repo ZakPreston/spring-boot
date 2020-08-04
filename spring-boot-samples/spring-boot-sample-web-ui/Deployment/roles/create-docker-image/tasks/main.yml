@@ -1,7 +1,12 @@
   - name: Create and push container
     docker_image:
+      credentialsId: NEXUS_CREDENTIAL_ID
       name: openjdk:8-jre-alpine
       source: pull
+  - name: Log into DockerHub
+    docker_login:
+      username: "{{lookup('env','NEXUS_USER')}}"
+      password: "{{lookup('env','NEXUS_PASSWORD')}}"
   - name: Build an image and push it to a private repo
     docker_image:
       build:
