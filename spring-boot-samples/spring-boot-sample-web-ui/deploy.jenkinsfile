@@ -29,7 +29,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    if (!params.ARTIFACT_VERSION) {
+                    if (params.ARTIFACT_VERSION == '') {
                         ARTIFACT_VERSION = "${Jenkins.instance.getItem('Build').lastSuccessfulBuild.number}"
                     } else {
                         ARTIFACT_VERSION = params.ARTIFACT_VERSION
