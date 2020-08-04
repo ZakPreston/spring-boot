@@ -83,11 +83,13 @@ pipeline {
                 build job: 'Deploy', parameters: [
                     string(name: 'ENV_NAME', value: 'epam-ci'),
                     string(name: 'ARTIFACT_VERSION', value: BUILD_NUMBER)
+                    string(name: 'ARTIFACT_TYPE', value: 'jar') 
                 ], wait: false
                 
                 build job: 'Deploy', parameters: [
                     string(name: 'ENV_NAME', value: 'epam-docker'),
-                    string(name: 'ARTIFACT_VERSION', value: BUILD_NUMBER)
+                    string(name: 'ARTIFACT_VERSION', value: BUILD_NUMBER),
+                    string(name: 'ARTIFACT_TYPE', value: 'container')
                 ], wait: false
             }
         }
