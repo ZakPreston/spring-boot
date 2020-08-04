@@ -93,5 +93,11 @@ pipeline {
                 ], wait: false
             }
         }
+        
+        post { 
+            always { 
+                cleanWs()
+            }
+        }
     }
 }
