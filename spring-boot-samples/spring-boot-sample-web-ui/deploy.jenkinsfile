@@ -18,7 +18,7 @@ pipeline {
         DOCKER_REPO_URL = "192.168.110.100:8088"
         DOCKER_CONTAINER_PORT = "${params.APPLICATION_PORT}:8080"
         
-        APPLICATION_PORT = params.APPLICATION_PORT
+        APPLICATION_PORT = "${params.APPLICATION_PORT}"
 
         REPOSITORY_URL = "http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/"
         LINUX_USER = "devops"
