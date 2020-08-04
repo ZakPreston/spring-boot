@@ -12,6 +12,7 @@ pipeline {
         NEXUS_URL = "192.168.110.100:8081"
         NEXUS_REPOSITORY = "Spring2020"
         APPLICATION_PORT = 8082
+        DOCKER_CONTAINER_PORT = "8088:8080"
         REPOSITORY_URL = "http://${NEXUS_URL}/repository/${NEXUS_REPOSITORY}/"
         LINUX_USER = "devops"
         GIT_URL = "https://github.com/ZakPreston/spring-boot.git"
