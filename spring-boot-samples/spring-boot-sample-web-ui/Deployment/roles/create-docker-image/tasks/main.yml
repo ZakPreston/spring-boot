@@ -10,7 +10,7 @@
         #path: /var/lib/jenkins/workspace/Build/spring-boot-samples/spring-boot-sample-web-ui
         dockerfile: application.dockerfile
       name: "{{lookup('env','DOCKER_REPO_URL')}}/{{lookup('env','ARTIFACT_ID')}}"
-      tag: "{{lookup('env','ARTIFACT_VERSION')}}"
+      tag: latest
       push: yes
       source: build
       state: present
