@@ -2,6 +2,6 @@
 - name: Create Docker container from artifacts
   hosts: all
   roles:
-  - role: create-docker-image
+  - role: create-docker-artifact
     become: yes
     become_user: jenkins
